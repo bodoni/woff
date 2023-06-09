@@ -1,4 +1,4 @@
-//! Decompressor for fonts in Web Open Font Format.
+//! Compressor for fonts in Web Open Font Format.
 
 extern crate brotli2;
 
