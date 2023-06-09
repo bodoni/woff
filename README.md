@@ -2,6 +2,13 @@
 
 The package provides a compressor for fonts in Web Open Font Format.
 
+## Usage
+
+```shell
+cargo install --features binary woff
+woff --source Roboto-Regular.ttf --destination Roboto-Regular.woff2
+```
+
 ## Contribution
 
 Your contribution is highly appreciated. Do not hesitate to open an issue or a

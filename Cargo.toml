@@ -14,9 +14,19 @@ keywords = ["font", "opentype", "typeface", "typography", "woff"]
 exclude = ["tests/fixtures/*"]
 build = "build.rs"
 
+[features]
+binary = ["arguments"]
+
+[[bin]]
+name = "woff"
+path = "src/main.rs"
+required-features = ["binary"]
+
 [dependencies]
 brotli2 = "0.3"
 libc = "0.2"
+
+arguments = { version = "0.7", optional = true }
 
 [build-dependencies]
 cc = "1.0"
