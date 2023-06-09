@@ -1,7 +1,6 @@
 # WOFF [![Package][package-img]][package-url] [![Documentation][documentation-img]][documentation-url] [![Build][build-img]][build-url]
 
-The package provides a compressor and decompressor for fonts in Web Open Font
-Format.
+The package provides a decompressor for fonts in Web Open Font Format.
 
 ## Contribution
 

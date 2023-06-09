@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
-description = "The package provides a compressor and decompressor for fonts in Web Open Font Format."
+description = "The package provides a decompressor for fonts in Web Open Font Format."
 documentation = "https://docs.rs/woff"
 homepage = "https://github.com/bodoni/woff"
 repository = "https://github.com/bodoni/woff"
@@ -12,3 +12,12 @@ readme = "README.md"
 categories = ["parsing"]
 keywords = ["font", "opentype", "typeface", "typography", "woff"]
 exclude = ["tests/fixtures/*"]
+build = "build.rs"
+
+[dependencies]
+brotli2 = "0.3"
+libc = "0.2"
+
+[build-dependencies]
+cc = "1.0"
+cmake = "0.1"
