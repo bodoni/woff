@@ -1,12 +1,12 @@
 fn main() {
     brotli();
     woff2();
+    woff2_wrapper();
 }
 
 fn brotli() {
     cc::Build::new()
         .include("vendor/brotli/source/c/include")
-        .warnings(false)
         .file("vendor/brotli/source/c/common/constants.c")
         .file("vendor/brotli/source/c/common/context.c")
         .file("vendor/brotli/source/c/common/dictionary.c")
@@ -34,6 +34,7 @@ fn brotli() {
         .file("vendor/brotli/source/c/enc/metablock.c")
         .file("vendor/brotli/source/c/enc/static_dict.c")
         .file("vendor/brotli/source/c/enc/utf8_util.c")
+        .warnings(false)
         .compile("libbrotli.a");
 }
 
@@ -41,7 +42,6 @@ fn woff2() {
     cc::Build::new()
         .cpp(true)
         .flag("-std=c++11")
-        .warnings(false)
         .include("vendor/brotli/source/c/include")
         .include("vendor/woff2/source/include")
         .file("vendor/woff2/source/src/font.cc")
@@ -53,12 +53,16 @@ fn woff2() {
         .file("vendor/woff2/source/src/woff2_common.cc")
         .file("vendor/woff2/source/src/woff2_enc.cc")
         .file("vendor/woff2/source/src/woff2_out.cc")
+        .warnings(false)
         .compile("libwoff2.a");
+}
+
+fn woff2_wrapper() {
     cc::Build::new()
         .cpp(true)
-        .warnings(false)
         .file("vendor/woff2/wrapper/woff2.cpp")
         .include("vendor/woff2/source/include")
         .include("vendor/woff2/wrapper")
-        .compile("libwoff2c.a");
+        .warnings(false)
+        .compile("libwoff2wrapper.a");
 }
