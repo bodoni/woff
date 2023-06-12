@@ -1,22 +1,64 @@
 fn main() {
+    brotli();
     woff2();
 }
 
-fn woff2() {
-    let build = cmake::Config::new("woff2/source")
-        .define("BUILD_SHARED_LIBS", "OFF")
-        .build();
-    println!(
-        "cargo:rustc-link-search=native={}",
-        build.join("lib").display(),
-    );
-    println!("cargo:rustc-link-lib=static=woff2common");
-    println!("cargo:rustc-link-lib=static=woff2enc");
-    println!("cargo:rustc-link-lib=static=woff2dec");
+fn brotli() {
     cc::Build::new()
-        .file("woff2/wrapper/woff2.cpp")
-        .include("woff2/wrapper")
-        .include(build.join("include"))
+        .include("brotli/source/c/include")
+        .warnings(false)
+        .file("brotli/source/c/common/constants.c")
+        .file("brotli/source/c/common/context.c")
+        .file("brotli/source/c/common/dictionary.c")
+        .file("brotli/source/c/common/platform.c")
+        .file("brotli/source/c/common/shared_dictionary.c")
+        .file("brotli/source/c/common/transform.c")
+        .file("brotli/source/c/enc/backward_references.c")
+        .file("brotli/source/c/enc/backward_references_hq.c")
+        .file("brotli/source/c/enc/bit_cost.c")
+        .file("brotli/source/c/enc/block_splitter.c")
+        .file("brotli/source/c/enc/brotli_bit_stream.c")
+        .file("brotli/source/c/enc/cluster.c")
+        .file("brotli/source/c/enc/command.c")
+        .file("brotli/source/c/enc/compound_dictionary.c")
+        .file("brotli/source/c/enc/compress_fragment.c")
+        .file("brotli/source/c/enc/compress_fragment_two_pass.c")
+        .file("brotli/source/c/enc/dictionary_hash.c")
+        .file("brotli/source/c/enc/encode.c")
+        .file("brotli/source/c/enc/encoder_dict.c")
+        .file("brotli/source/c/enc/entropy_encode.c")
+        .file("brotli/source/c/enc/fast_log.c")
+        .file("brotli/source/c/enc/histogram.c")
+        .file("brotli/source/c/enc/literal_cost.c")
+        .file("brotli/source/c/enc/memory.c")
+        .file("brotli/source/c/enc/metablock.c")
+        .file("brotli/source/c/enc/static_dict.c")
+        .file("brotli/source/c/enc/utf8_util.c")
+        .compile("libbrotli.a");
+}
+
+fn woff2() {
+    cc::Build::new()
         .cpp(true)
-        .compile("woff2");
+        .flag("-std=c++11")
+        .warnings(false)
+        .include("brotli/source/c/include")
+        .include("woff2/source/include")
+        .file("woff2/source/src/font.cc")
+        .file("woff2/source/src/glyph.cc")
+        .file("woff2/source/src/normalize.cc")
+        .file("woff2/source/src/table_tags.cc")
+        .file("woff2/source/src/transform.cc")
+        .file("woff2/source/src/variable_length.cc")
+        .file("woff2/source/src/woff2_common.cc")
+        .file("woff2/source/src/woff2_enc.cc")
+        .file("woff2/source/src/woff2_out.cc")
+        .compile("libwoff2.a");
+    cc::Build::new()
+        .cpp(true)
+        .warnings(false)
+        .file("woff2/wrapper/woff2.cpp")
+        .include("woff2/source/include")
+        .include("woff2/wrapper")
+        .compile("libwoff2c.a");
 }
