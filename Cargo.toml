@@ -1,6 +1,6 @@
 [package]
 name = "woff"
-version = "0.2.1"
+version = "0.2.2"
 edition = "2021"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
@@ -11,7 +11,15 @@ repository = "https://github.com/bodoni/woff"
 readme = "README.md"
 categories = ["parsing"]
 keywords = ["font", "opentype", "typeface", "typography", "woff"]
-exclude = ["tests/fixtures/*"]
+include = [
+    "Cargo.toml",
+    "build.rs",
+    "src/*",
+    "vendor/brotli/source/c/*",
+    "vendor/woff2/source/include/*",
+    "vendor/woff2/source/src/*",
+    "vendor/woff2/wrapper/*",
+]
 build = "build.rs"
 
 [features]
