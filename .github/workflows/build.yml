@@ -31,3 +31,9 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with: {toolchain: stable}
       - run: cargo test
+      - run: |
+          sudo apt-get install musl-tools
+          sudo ln -s /usr/bin/g++ /usr/bin/musl-g++
+          rustup target add x86_64-unknown-linux-musl
+          cargo test --target x86_64-unknown-linux-musl
+        if: matrix.os == 'ubuntu-latest'

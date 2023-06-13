@@ -1,10 +1,6 @@
 fn main() {
-    brotli();
-    woff2();
-    woff2_wrapper();
-}
+    let target = std::env::var("TARGET").unwrap();
 
-fn brotli() {
     cc::Build::new()
         .include("vendor/brotli/source/c/include")
         .file("vendor/brotli/source/c/common/constants.c")
@@ -34,11 +30,10 @@ fn brotli() {
         .file("vendor/brotli/source/c/enc/metablock.c")
         .file("vendor/brotli/source/c/enc/static_dict.c")
         .file("vendor/brotli/source/c/enc/utf8_util.c")
+        .static_flag(true)
         .warnings(false)
         .compile("libbrotli.a");
-}
 
-fn woff2() {
     cc::Build::new()
         .cpp(true)
         .flag("-std=c++11")
@@ -53,16 +48,21 @@ fn woff2() {
         .file("vendor/woff2/source/src/woff2_common.cc")
         .file("vendor/woff2/source/src/woff2_enc.cc")
         .file("vendor/woff2/source/src/woff2_out.cc")
+        .static_flag(true)
         .warnings(false)
         .compile("libwoff2.a");
-}
 
-fn woff2_wrapper() {
     cc::Build::new()
         .cpp(true)
         .file("vendor/woff2/wrapper/woff2.cpp")
         .include("vendor/woff2/source/include")
         .include("vendor/woff2/wrapper")
+        .static_flag(true)
         .warnings(false)
         .compile("libwoff2wrapper.a");
+
+    if target == "x86_64-unknown-linux-musl" {
+        println!("cargo:rustc-link-lib=m");
+        println!("cargo:rustc-link-lib=pthread");
+    }
 }
