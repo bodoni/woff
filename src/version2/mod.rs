@@ -17,23 +17,23 @@ pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) 
     let size = unsafe {
         ffi::MaxWOFF2CompressedSize(
             data.as_ptr() as *const _,
-            data.len() as libc::size_t,
+            data.len(),
             metadata.as_ptr() as *const _,
-            metadata_length as libc::size_t,
+            metadata_length,
         )
     };
     let mut result = vec![0; size];
-    let mut result_length = result.len() as libc::size_t;
+    let mut result_length = result.len();
     let success = unsafe {
         ffi::ConvertTTFToWOFF2(
             data.as_ptr() as *const _,
-            data.len() as libc::size_t,
+            data.len(),
             result.as_mut_ptr() as *mut _,
             &mut result_length as *mut _,
             metadata.as_ptr() as *const _,
-            metadata_length as libc::size_t,
-            quality as libc::c_int,
-            transform as libc::c_int,
+            metadata_length,
+            quality as core::ffi::c_int,
+            transform as core::ffi::c_int,
         ) != 0
     };
     if success {

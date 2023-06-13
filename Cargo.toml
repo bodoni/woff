@@ -31,8 +31,6 @@ path = "src/main.rs"
 required-features = ["binary"]
 
 [dependencies]
-libc = "0.2"
-
 arguments = { version = "0.7", optional = true }
 
 [build-dependencies]
