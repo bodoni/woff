@@ -7,13 +7,6 @@
 extern "C" {
 #endif
 
-size_t ComputeWOFF2FinalSize(
-    const uint8_t *data,
-    size_t length
-) {
-  return woff2::ComputeWOFF2FinalSize(data, length);
-}
-
 bool ConvertTTFToWOFF2(
     const uint8_t *data,
     size_t length,
@@ -42,7 +35,7 @@ bool ConvertWOFF2ToTTF(
     return woff2::ConvertWOFF2ToTTF(data, length, &output);
 }
 
-size_t MaxWOFF2CompressedSize(
+size_t ComputeTTFToWOFF2Size(
     const uint8_t *data,
     size_t length,
     const char* extended_metadata,
@@ -50,6 +43,13 @@ size_t MaxWOFF2CompressedSize(
 ) {
     std::string extended_metadata_copy(extended_metadata, extended_metadata_length);
     return woff2::MaxWOFF2CompressedSize(data, length, extended_metadata);
+}
+
+size_t ComputeWOFF2ToTTFSize(
+    const uint8_t *data,
+    size_t length
+) {
+  return woff2::ComputeWOFF2FinalSize(data, length);
 }
 
 #ifdef __cplusplus

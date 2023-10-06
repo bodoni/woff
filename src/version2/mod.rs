@@ -15,7 +15,7 @@ pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) 
         _ => return None,
     };
     let size = unsafe {
-        ffi::MaxWOFF2CompressedSize(
+        ffi::ComputeTTFToWOFF2Size(
             data.as_ptr() as *const _,
             data.len(),
             metadata.as_ptr() as *const _,

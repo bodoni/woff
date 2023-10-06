@@ -5,11 +5,6 @@
 extern "C" {
 #endif
 
-size_t ComputeWOFF2FinalSize(
-    const uint8_t *data,
-    size_t length
-);
-
 bool ConvertTTFToWOFF2(
     const uint8_t *data,
     size_t length,
@@ -28,12 +23,14 @@ bool ConvertWOFF2ToTTF(
     size_t length
 );
 
-size_t MaxWOFF2CompressedSize(
+size_t ComputeTTFToWOFF2Size(
     const uint8_t *data,
     size_t length,
     const char* extended_metadata,
     size_t extended_metadata_length
 );
+
+size_t ComputeWOFF2ToTTFSize(const uint8_t *data, size_t length);
 
 #ifdef __cplusplus
 }
