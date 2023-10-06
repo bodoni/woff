@@ -1,3 +1,4 @@
+#include <woff2/decode.h>
 #include <woff2/encode.h>
 
 #include "woff2.hpp"
@@ -5,6 +6,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+size_t ComputeWOFF2FinalSize(
+    const uint8_t *data,
+    size_t length
+) {
+  return woff2::ComputeWOFF2FinalSize(data, length);
+}
 
 bool ConvertTTFToWOFF2(
     const uint8_t *data,
@@ -22,6 +30,16 @@ bool ConvertTTFToWOFF2(
     parameters.brotli_quality = brotli_quality;
     parameters.allow_transforms = allow_transforms;
     return woff2::ConvertTTFToWOFF2(data, length, result, result_length, parameters);
+}
+
+bool ConvertWOFF2ToTTF(
+    uint8_t *result,
+    size_t result_length,
+    const uint8_t *data,
+    size_t length
+) {
+    woff2::WOFF2MemoryOut output(result, result_length);
+    return woff2::ConvertWOFF2ToTTF(data, length, &output);
 }
 
 size_t MaxWOFF2CompressedSize(
