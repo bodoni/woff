@@ -36,12 +36,11 @@ pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) 
             transform as core::ffi::c_int,
         ) != 0
     };
-    if success {
-        result.truncate(result_length);
-        Some(result)
-    } else {
-        None
+    if !success {
+        return None;
     }
+    result.truncate(result_length);
+    result.into()
 }
 
 /// Decompress.
@@ -56,11 +55,10 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
             data.len(),
         ) != 0
     };
-    if success {
-        Some(result)
-    } else {
-        None
+    if !success {
+        return None;
     }
+    result.into()
 }
 
 /// Convert.
