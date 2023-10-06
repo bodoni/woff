@@ -44,33 +44,81 @@ pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) 
     }
 }
 
+/// Decompress.
+pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
+    let size = unsafe { ffi::ComputeWOFF2ToTTFSize(data.as_ptr() as *const _, data.len()) };
+    let mut result = vec![0; size];
+    let success = unsafe {
+        ffi::ConvertWOFF2ToTTF(
+            result.as_mut_ptr() as *mut _,
+            size,
+            data.as_ptr() as *const _,
+            data.len(),
+        ) != 0
+    };
+    if success {
+        Some(result)
+    } else {
+        None
+    }
+}
+
 /// Convert.
 pub fn convert<T: AsRef<Path>>(
     source: T,
     destination: T,
-    metadata: String,
-    quality: usize,
-    transform: bool,
+    metadata: Option<String>,
+    quality: Option<usize>,
+    transform: Option<bool>,
 ) -> Result<()> {
     let data = std::fs::read(source)?;
-    let data = match compress(&data, metadata, quality, transform) {
-        Some(data) => data,
-        _ => return Err(Error::new(ErrorKind::Other, "failed to compress")),
+    let destination = destination.as_ref();
+    let data = if destination
+        .extension()
+        .and_then(|value| value.to_str())
+        .map(|value| value == "woff2")
+        .unwrap_or(false)
+    {
+        match compress(
+            &data,
+            metadata.unwrap_or_default(),
+            quality.unwrap_or(8),
+            transform.unwrap_or(true),
+        ) {
+            Some(data) => data,
+            _ => return Err(Error::new(ErrorKind::Other, "failed to compress")),
+        }
+    } else {
+        match decompress(&data) {
+            Some(data) => data,
+            _ => return Err(Error::new(ErrorKind::Other, "failed to compress")),
+        }
     };
     std::fs::write(destination, data)
 }
 
 #[cfg(test)]
 mod tests {
-
     #[test]
-    fn convert() {
+    fn compress() {
         let result = super::convert(
             "tests/fixtures/Roboto-Regular.ttf",
             "tests/fixtures/Roboto-Regular.woff2",
-            "".into(),
-            8,
-            true,
+            None,
+            None,
+            None,
+        );
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn decompress() {
+        let result = super::convert(
+            "tests/fixtures/Roboto-Regular.woff2",
+            "tests/fixtures/Roboto-Regular.otf",
+            None,
+            None,
+            None,
         );
         assert!(result.is_ok());
     }
