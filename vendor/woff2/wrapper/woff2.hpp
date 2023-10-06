@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-bool ConvertTTFToWOFF2(
+int ConvertTTFToWOFF2(
     const uint8_t *data,
     size_t length,
     uint8_t *result,
@@ -16,7 +16,7 @@ bool ConvertTTFToWOFF2(
     int allow_transforms
 );
 
-bool ConvertWOFF2ToTTF(
+int ConvertWOFF2ToTTF(
     uint8_t *result,
     size_t result_length,
     const uint8_t *data,
