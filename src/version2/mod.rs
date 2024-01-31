@@ -89,7 +89,7 @@ pub fn convert<T: AsRef<Path>>(
     } else {
         match decompress(&data) {
             Some(data) => data,
-            _ => return Err(Error::new(ErrorKind::Other, "failed to compress")),
+            _ => return Err(Error::new(ErrorKind::Other, "failed to decompress")),
         }
     };
     std::fs::write(destination, data)
