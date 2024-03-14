@@ -4,6 +4,7 @@ fn main() {
     let arguments::Arguments {
         options, orphans, ..
     } = arguments::parse(std::env::args()).expect("failed to parse arguments");
+    #[allow(clippy::get_first)]
     let source = match orphans.get(0) {
         Some(value) => PathBuf::from(value),
         _ => {
