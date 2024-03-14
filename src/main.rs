@@ -4,8 +4,20 @@ fn main() {
     let arguments::Arguments {
         options, orphans, ..
     } = arguments::parse(std::env::args()).expect("failed to parse arguments");
-    let source = PathBuf::from(orphans.get(0).expect("a source should be given"));
-    let destination = PathBuf::from(orphans.get(1).expect("a destination should be given"));
+    let source = match orphans.get(0) {
+        Some(value) => PathBuf::from(value),
+        _ => {
+            eprintln!("Error: a source should be given.");
+            std::process::exit(1);
+        }
+    };
+    let destination = match orphans.get(1) {
+        Some(value) => PathBuf::from(value),
+        _ => {
+            eprintln!("Error: a destination should be given.");
+            std::process::exit(1);
+        }
+    };
     woff::version2::convert(
         source,
         destination,
