@@ -7,6 +7,7 @@ The package provides a compressor for fonts in Web Open Font Format.
 ```shell
 cargo install --features binary woff
 woff Roboto-Regular.ttf Roboto-Regular.woff2
+woff Roboto-Regular.woff2 Roboto-Regular.ttf
 ```
 
 ## Contribution
