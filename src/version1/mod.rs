@@ -33,7 +33,7 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
     finalize(data, size, status)
 }
 
-/// Convert.
+/// Compress or decompress.
 pub fn convert<T: AsRef<Path>>(source: T, destination: T) -> Result<()> {
     let data = std::fs::read(source)?;
     let destination = destination.as_ref();

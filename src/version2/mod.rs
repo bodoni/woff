@@ -61,7 +61,7 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
     result.into()
 }
 
-/// Convert.
+/// Compress or decompress.
 pub fn convert<T: AsRef<Path>>(
     source: T,
     destination: T,
