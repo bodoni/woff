@@ -22,43 +22,43 @@ pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) 
             metadata_length,
         )
     };
-    let mut result = vec![0; size];
-    let mut result_length = result.len();
-    let success = unsafe {
+    let mut buffer = vec![0; size];
+    let mut size = buffer.len();
+    let status = unsafe {
         ffi::ConvertTTFToWOFF2(
             data.as_ptr() as *const _,
             data.len(),
-            result.as_mut_ptr() as *mut _,
-            &mut result_length as *mut _,
+            buffer.as_mut_ptr() as *mut _,
+            &mut size as *mut _,
             metadata.as_ptr() as *const _,
             metadata_length,
             quality as core::ffi::c_int,
             transform as core::ffi::c_int,
-        ) != 0
+        )
     };
-    if !success {
+    if status == 0 {
         return None;
     }
-    result.truncate(result_length);
-    result.into()
+    buffer.truncate(size);
+    buffer.into()
 }
 
 /// Decompress.
 pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
     let size = unsafe { ffi::ComputeWOFF2ToTTFSize(data.as_ptr() as *const _, data.len()) };
-    let mut result = vec![0; size];
-    let success = unsafe {
+    let mut buffer = vec![0; size];
+    let status = unsafe {
         ffi::ConvertWOFF2ToTTF(
-            result.as_mut_ptr() as *mut _,
+            buffer.as_mut_ptr() as *mut _,
             size,
             data.as_ptr() as *const _,
             data.len(),
-        ) != 0
+        )
     };
-    if !success {
+    if status == 0 {
         return None;
     }
-    result.into()
+    buffer.into()
 }
 
 /// Compress or decompress.

@@ -27,7 +27,7 @@ build = "build.rs"
 default = ["version1", "version2"]
 
 binary = ["arguments", "version1", "version2"]
-version1 = ["libc"]
+version1 = []
 version2 = []
 
 [[bin]]
@@ -37,7 +37,7 @@ required-features = ["binary"]
 
 [dependencies]
 arguments = { version = "0.8", optional = true }
-libc = { version = "0.2", default-features = false, optional = true }
+libc = { version = "0.2", default-features = false }
 
 [build-dependencies]
 cc = "1"
