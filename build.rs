@@ -1,4 +1,5 @@
 fn main() {
+    #[cfg(feature = "version2")]
     let target = std::env::var("TARGET").unwrap();
 
     #[cfg(feature = "version1")]
