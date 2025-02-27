@@ -10,7 +10,7 @@ homepage = "https://github.com/bodoni/woff"
 repository = "https://github.com/bodoni/woff"
 readme = "README.md"
 categories = ["parsing"]
-keywords = ["font", "opentype", "typeface", "typography", "woff", "woff2"]
+keywords = ["font", "opentype", "truetype", "woff", "woff2"]
 include = [
     "Cargo.toml",
     "build.rs",
