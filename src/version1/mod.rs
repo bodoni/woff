@@ -21,6 +21,7 @@ pub fn compress(data: &[u8]) -> Option<Vec<u8>> {
             &mut status,
         )
     };
+    debug_assert_eq!(status, 0);
     finalize(data, size, status)
 }
 
@@ -30,6 +31,7 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
     let mut status = 0;
     let data =
         unsafe { ffi::woffDecode(data.as_ptr() as _, data.len() as _, &mut size, &mut status) };
+    debug_assert_eq!(status, 0);
     finalize(data, size, status)
 }
 

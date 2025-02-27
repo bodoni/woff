@@ -36,6 +36,7 @@ pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) 
             transform as core::ffi::c_int,
         )
     };
+    debug_assert_ne!(status, 0);
     if status == 0 {
         return None;
     }
@@ -55,6 +56,7 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
             data.len(),
         )
     };
+    debug_assert_ne!(status, 0);
     if status == 0 {
         return None;
     }
