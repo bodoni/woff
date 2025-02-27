@@ -99,49 +99,49 @@ pub fn convert<T: AsRef<Path>>(
 mod tests {
     #[test]
     fn compress_otf() {
-        let result = super::convert(
+        super::convert(
             "tests/fixtures/Roboto-Regular.otf",
             "tests/fixtures/Roboto-Regular.otf.woff2",
             None,
             None,
             None,
-        );
-        assert!(result.is_ok());
+        )
+        .unwrap();
     }
 
     #[test]
     fn compress_ttf() {
-        let result = super::convert(
+        super::convert(
             "tests/fixtures/Roboto-Regular.ttf",
             "tests/fixtures/Roboto-Regular.ttf.woff2",
             None,
             None,
             None,
-        );
-        assert!(result.is_ok());
+        )
+        .unwrap();
     }
 
     #[test]
     fn decompress_otf() {
-        let result = super::convert(
+        super::convert(
             "tests/fixtures/Roboto-Regular.otf.woff2",
             "tests/fixtures/Roboto-Regular.otf",
             None,
             None,
             None,
-        );
-        assert!(result.is_ok());
+        )
+        .unwrap();
     }
 
     #[test]
     fn decompress_ttf() {
-        let result = super::convert(
+        super::convert(
             "tests/fixtures/Roboto-Regular.ttf.woff2",
             "tests/fixtures/Roboto-Regular.ttf",
             None,
             None,
             None,
-        );
-        assert!(result.is_ok());
+        )
+        .unwrap();
     }
 }
