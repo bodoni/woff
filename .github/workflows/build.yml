@@ -10,6 +10,15 @@ on:
   workflow_dispatch:
 
 jobs:
+  benchmark:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: rustup toolchain install nightly --profile=minimal
+      - run: cargo +nightly bench
+
   check:
     runs-on: macos-latest
     steps:
