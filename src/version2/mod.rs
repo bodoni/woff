@@ -100,7 +100,7 @@ pub fn convert<T: AsRef<Path>>(
 #[cfg(test)]
 mod tests {
     #[test]
-    fn compress_otf() {
+    fn otf() {
         super::convert(
             "tests/fixtures/Roboto-Regular.otf",
             "tests/fixtures/Roboto-Regular.otf.woff2",
@@ -109,10 +109,18 @@ mod tests {
             None,
         )
         .unwrap();
+        super::convert(
+            "tests/fixtures/Roboto-Regular.otf.woff2",
+            "tests/fixtures/Roboto-Regular.otf",
+            None,
+            None,
+            None,
+        )
+        .unwrap();
     }
 
     #[test]
-    fn compress_ttf() {
+    fn ttf() {
         super::convert(
             "tests/fixtures/Roboto-Regular.ttf",
             "tests/fixtures/Roboto-Regular.ttf.woff2",
@@ -121,22 +129,6 @@ mod tests {
             None,
         )
         .unwrap();
-    }
-
-    #[test]
-    fn decompress_otf() {
-        super::convert(
-            "tests/fixtures/Roboto-Regular.otf.woff2",
-            "tests/fixtures/Roboto-Regular.otf",
-            None,
-            None,
-            None,
-        )
-        .unwrap();
-    }
-
-    #[test]
-    fn decompress_ttf() {
         super::convert(
             "tests/fixtures/Roboto-Regular.ttf.woff2",
             "tests/fixtures/Roboto-Regular.ttf",
