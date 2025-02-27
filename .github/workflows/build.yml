@@ -14,24 +14,34 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-        with: {submodules: true}
+        with:
+          submodules: true
       - run: rustup toolchain install stable --profile=minimal --component clippy --component rustfmt
       - run: cargo clippy -- -D warnings
       - run: cargo fmt --all -- --check
 
-  test:
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  test-macos:
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-        with: {submodules: true}
+        with:
+          submodules: true
       - run: rustup toolchain install stable --profile=minimal
       - run: cargo test
-      - run: |
-          sudo apt-get install musl-tools
-          sudo ln -s /usr/bin/g++ /usr/bin/musl-g++
-          rustup target add x86_64-unknown-linux-musl
-          cargo test --target x86_64-unknown-linux-musl
-        if: matrix.os == 'ubuntu-latest'
+
+  test-ubuntu-gcc:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: rustup toolchain install stable --profile=minimal
+      - run: cargo test
+
+  test-ubuntu-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - run: docker build .

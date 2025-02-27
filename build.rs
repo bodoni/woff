@@ -68,7 +68,7 @@ fn main() {
         .compile("libwoff2wrapper.a");
 
     if target == "x86_64-unknown-linux-musl" {
-        println!("cargo:rustc-link-lib=m");
         println!("cargo:rustc-link-lib=pthread");
+        println!("cargo:rustc-link-lib=m");
     }
 }
