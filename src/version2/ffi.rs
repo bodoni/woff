@@ -1,4 +1,3 @@
-#[allow(deprecated)]
 extern "C" {
     pub fn ComputeTTFToWOFF2Size(
         data: *const u8,

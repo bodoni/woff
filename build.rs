@@ -2,6 +2,13 @@ fn main() {
     let target = std::env::var("TARGET").unwrap();
 
     cc::Build::new()
+        .include("vendor/sfnt2woff/source/woff")
+        .file("vendor/sfnt2woff/source/woff/woff.c")
+        .static_flag(true)
+        .warnings(false)
+        .compile("libsfnt2woff.a");
+
+    cc::Build::new()
         .cpp(true)
         .flag("-std=c++11")
         .file("vendor/woff2/wrapper/woff2.cpp")
@@ -71,4 +78,6 @@ fn main() {
         println!("cargo:rustc-link-lib=m");
         println!("cargo:rustc-link-lib=pthread");
     }
+
+    println!("cargo:rustc-link-lib=z");
 }

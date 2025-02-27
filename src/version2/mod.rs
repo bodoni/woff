@@ -2,10 +2,10 @@
 //!
 //! [1]: https://www.w3.org/TR/WOFF2/
 
+mod ffi;
+
 use std::io::{Error, ErrorKind, Result};
 use std::path::Path;
-
-mod ffi;
 
 /// Compress.
 pub fn compress(data: &[u8], metadata: String, quality: usize, transform: bool) -> Option<Vec<u8>> {
