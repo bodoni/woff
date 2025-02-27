@@ -2,6 +2,35 @@ fn main() {
     let target = std::env::var("TARGET").unwrap();
 
     cc::Build::new()
+        .cpp(true)
+        .flag("-std=c++11")
+        .file("vendor/woff2/wrapper/woff2.cpp")
+        .include("vendor/woff2/source/include")
+        .include("vendor/woff2/wrapper")
+        .static_flag(true)
+        .warnings(false)
+        .compile("libwoff2wrapper.a");
+
+    cc::Build::new()
+        .cpp(true)
+        .flag("-std=c++11")
+        .include("vendor/brotli/source/c/include")
+        .include("vendor/woff2/source/include")
+        .file("vendor/woff2/source/src/font.cc")
+        .file("vendor/woff2/source/src/glyph.cc")
+        .file("vendor/woff2/source/src/normalize.cc")
+        .file("vendor/woff2/source/src/table_tags.cc")
+        .file("vendor/woff2/source/src/transform.cc")
+        .file("vendor/woff2/source/src/variable_length.cc")
+        .file("vendor/woff2/source/src/woff2_common.cc")
+        .file("vendor/woff2/source/src/woff2_dec.cc")
+        .file("vendor/woff2/source/src/woff2_enc.cc")
+        .file("vendor/woff2/source/src/woff2_out.cc")
+        .static_flag(true)
+        .warnings(false)
+        .compile("libwoff2.a");
+
+    cc::Build::new()
         .include("vendor/brotli/source/c/include")
         .file("vendor/brotli/source/c/common/constants.c")
         .file("vendor/brotli/source/c/common/context.c")
@@ -38,37 +67,8 @@ fn main() {
         .warnings(false)
         .compile("libbrotli.a");
 
-    cc::Build::new()
-        .cpp(true)
-        .flag("-std=c++11")
-        .include("vendor/brotli/source/c/include")
-        .include("vendor/woff2/source/include")
-        .file("vendor/woff2/source/src/font.cc")
-        .file("vendor/woff2/source/src/glyph.cc")
-        .file("vendor/woff2/source/src/normalize.cc")
-        .file("vendor/woff2/source/src/table_tags.cc")
-        .file("vendor/woff2/source/src/transform.cc")
-        .file("vendor/woff2/source/src/variable_length.cc")
-        .file("vendor/woff2/source/src/woff2_common.cc")
-        .file("vendor/woff2/source/src/woff2_dec.cc")
-        .file("vendor/woff2/source/src/woff2_enc.cc")
-        .file("vendor/woff2/source/src/woff2_out.cc")
-        .static_flag(true)
-        .warnings(false)
-        .compile("libwoff2.a");
-
-    cc::Build::new()
-        .cpp(true)
-        .flag("-std=c++11")
-        .file("vendor/woff2/wrapper/woff2.cpp")
-        .include("vendor/woff2/source/include")
-        .include("vendor/woff2/wrapper")
-        .static_flag(true)
-        .warnings(false)
-        .compile("libwoff2wrapper.a");
-
     if target == "x86_64-unknown-linux-musl" {
-        println!("cargo:rustc-link-lib=pthread");
         println!("cargo:rustc-link-lib=m");
+        println!("cargo:rustc-link-lib=pthread");
     }
 }
