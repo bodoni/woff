@@ -1,6 +1,7 @@
 fn main() {
     let target = std::env::var("TARGET").unwrap();
 
+    #[cfg(feature = "version1")]
     cc::Build::new()
         .include("vendor/sfnt2woff/source/woff")
         .file("vendor/sfnt2woff/source/woff/woff.c")
@@ -8,6 +9,10 @@ fn main() {
         .warnings(false)
         .compile("libsfnt2woff.a");
 
+    #[cfg(feature = "version1")]
+    println!("cargo:rustc-link-lib=z");
+
+    #[cfg(feature = "version2")]
     cc::Build::new()
         .cpp(true)
         .flag("-std=c++11")
@@ -18,6 +23,7 @@ fn main() {
         .warnings(false)
         .compile("libwoff2wrapper.a");
 
+    #[cfg(feature = "version2")]
     cc::Build::new()
         .cpp(true)
         .flag("-std=c++11")
@@ -37,6 +43,7 @@ fn main() {
         .warnings(false)
         .compile("libwoff2.a");
 
+    #[cfg(feature = "version2")]
     cc::Build::new()
         .include("vendor/brotli/source/c/include")
         .file("vendor/brotli/source/c/common/constants.c")
@@ -74,10 +81,9 @@ fn main() {
         .warnings(false)
         .compile("libbrotli.a");
 
+    #[cfg(feature = "version2")]
     if target == "x86_64-unknown-linux-musl" {
         println!("cargo:rustc-link-lib=m");
         println!("cargo:rustc-link-lib=pthread");
     }
-
-    println!("cargo:rustc-link-lib=z");
 }
