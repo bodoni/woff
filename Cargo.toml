@@ -4,18 +4,19 @@ version = "0.5.0"
 edition = "2021"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
-description = "The package provides a compressor for fonts in Web Open Font Format."
+description = "The package provides a converter for fonts in Web Open Font Format."
 documentation = "https://docs.rs/woff"
 homepage = "https://github.com/bodoni/woff"
 repository = "https://github.com/bodoni/woff"
 readme = "README.md"
 categories = ["parsing"]
-keywords = ["font", "opentype", "typeface", "typography", "woff"]
+keywords = ["font", "opentype", "typeface", "typography", "woff", "woff2"]
 include = [
     "Cargo.toml",
     "build.rs",
     "src/*",
     "vendor/brotli/source/c/*",
+    "vendor/sfnt2woff/source/woff/*",
     "vendor/woff2/source/include/*",
     "vendor/woff2/source/src/*",
     "vendor/woff2/wrapper/*",
