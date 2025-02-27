@@ -27,7 +27,7 @@ jobs:
         with:
           submodules: true
       - run: rustup toolchain install stable --profile=minimal
-      - run: cargo test -vv
+      - run: cargo test
 
   test-ubuntu-gcc:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
         with:
           submodules: true
       - run: rustup toolchain install stable --profile=minimal
-      - run: cargo test -vv
+      - run: cargo test
 
   test-ubuntu-musl:
     runs-on: ubuntu-latest
