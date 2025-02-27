@@ -1,6 +1,6 @@
 [package]
 name = "woff"
-version = "0.3.4"
+version = "0.4.0"
 edition = "2021"
 license = "Apache-2.0/MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
@@ -35,3 +35,7 @@ arguments = { version = "0.8", optional = true }
 
 [build-dependencies]
 cc = "1"
+
+[profile.release]
+lto = true
+panic = "abort"
