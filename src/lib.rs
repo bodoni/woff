@@ -1,4 +1,4 @@
-//! Converter for fonts in Web Open Font Format.
+//! Converter for Web Open Font Format.
 
 #[cfg(feature = "version1")]
 pub mod version1;

@@ -1,6 +1,6 @@
 # WOFF [![Package][package-img]][package-url] [![Documentation][documentation-img]][documentation-url] [![Build][build-img]][build-url]
 
-The package provides a converter for fonts in Web Open Font Format.
+The package provides a converter for Web Open Font Format.
 
 ## Usage
 
@@ -8,9 +8,9 @@ The package provides a converter for fonts in Web Open Font Format.
 cargo install --features binary woff
 
 woff Roboto-Regular.ttf Roboto-Regular.woff
-woff Roboto-Regular.ttf Roboto-Regular.woff2
-
 woff Roboto-Regular.woff Roboto-Regular.ttf
+
+woff Roboto-Regular.ttf Roboto-Regular.woff2
 woff Roboto-Regular.woff2 Roboto-Regular.ttf
 ```
 
