@@ -3,7 +3,7 @@ FROM messense/rust-musl-cross:x86_64-musl AS builder
 WORKDIR /source
 COPY . .
 
-RUN cargo install --features binary --path . --root target/install
+RUN cargo install --all-features --path . --root target/install
 
 FROM scratch
 

@@ -23,7 +23,11 @@ include = [
 build = "build.rs"
 
 [features]
+default = ["version1", "version2"]
+
 binary = ["arguments"]
+version1 = ["libc"]
+version2 = []
 
 [[bin]]
 name = "woff"
@@ -32,7 +36,7 @@ required-features = ["binary"]
 
 [dependencies]
 arguments = { version = "0.8", optional = true }
-libc = { version = "0.2", default-features = false }
+libc = { version = "0.2", default-features = false, optional = true }
 
 [build-dependencies]
 cc = "1"
