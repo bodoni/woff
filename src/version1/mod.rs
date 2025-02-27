@@ -78,18 +78,36 @@ fn finalize(data: *const u8, size: u32, status: u32) -> Option<Vec<u8>> {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn compress() {
+    fn compress_otf() {
         let result = super::convert(
-            "tests/fixtures/Roboto-Regular.ttf",
-            "tests/fixtures/Roboto-Regular.woff",
+            "tests/fixtures/Roboto-Regular.otf",
+            "tests/fixtures/Roboto-Regular.otf.woff",
         );
         assert!(result.is_ok());
     }
 
     #[test]
-    fn decompress() {
+    fn compress_ttf() {
         let result = super::convert(
-            "tests/fixtures/Roboto-Regular.woff",
+            "tests/fixtures/Roboto-Regular.ttf",
+            "tests/fixtures/Roboto-Regular.ttf.woff",
+        );
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn decompress_otf() {
+        let result = super::convert(
+            "tests/fixtures/Roboto-Regular.otf.woff",
+            "tests/fixtures/Roboto-Regular.otf",
+        );
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn decompress_ttf() {
+        let result = super::convert(
+            "tests/fixtures/Roboto-Regular.ttf.woff",
             "tests/fixtures/Roboto-Regular.ttf",
         );
         assert!(result.is_ok());

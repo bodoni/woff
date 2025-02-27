@@ -9,12 +9,9 @@ macro_rules! ok(($result:expr) => ($result.unwrap()));
 #[bench]
 fn compress(bencher: &mut Bencher) {
     bencher.iter(|| {
-        ok!(woff::version2::convert(
+        ok!(woff::version1::convert(
             "tests/fixtures/Roboto-Regular.ttf",
-            "tests/fixtures/Roboto-Regular.ttf.woff2",
-            None,
-            None,
-            None,
+            "tests/fixtures/Roboto-Regular.ttf.woff",
         ));
     });
 }
@@ -22,12 +19,9 @@ fn compress(bencher: &mut Bencher) {
 #[bench]
 fn decompress(bencher: &mut Bencher) {
     bencher.iter(|| {
-        ok!(woff::version2::convert(
-            "tests/fixtures/Roboto-Regular.ttf.woff2",
+        ok!(woff::version1::convert(
+            "tests/fixtures/Roboto-Regular.ttf.woff",
             "tests/fixtures/Roboto-Regular.ttf",
-            None,
-            None,
-            None,
         ));
     });
 }
