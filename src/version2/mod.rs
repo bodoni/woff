@@ -4,7 +4,7 @@
 
 mod ffi;
 
-use std::io::{Error, ErrorKind, Result};
+use std::io::{Error, Result};
 use std::path::Path;
 
 /// Compress.
@@ -86,12 +86,12 @@ pub fn convert<T: AsRef<Path>>(
             transform.unwrap_or(true),
         ) {
             Some(data) => data,
-            _ => return Err(Error::new(ErrorKind::Other, "failed to compress")),
+            _ => return Err(Error::other("failed to compress")),
         }
     } else {
         match decompress(&data) {
             Some(data) => data,
-            _ => return Err(Error::new(ErrorKind::Other, "failed to decompress")),
+            _ => return Err(Error::other("failed to decompress")),
         }
     };
     std::fs::write(destination, data)
