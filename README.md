@@ -20,8 +20,8 @@ Options for WOFF:
     --minor-version <number> — set the minor version (0 by default)
 
 Options for WOFF2:
-    --quality <number>  — set the compression quality (8 by default)
     --metadata <string> — append metadata (empty by default)
+    --quality <number>  — set the compression quality (8 by default)
     --no-transform      — disallow transforms
 ```
 

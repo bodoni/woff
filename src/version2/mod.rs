@@ -5,7 +5,7 @@
 mod ffi;
 
 /// Compress.
-pub fn compress<T>(data: &[u8], quality: usize, metadata: T, transform: bool) -> Option<Vec<u8>>
+pub fn compress<T>(data: &[u8], metadata: T, quality: usize, transform: bool) -> Option<Vec<u8>>
 where
     T: Into<Vec<u8>>,
 {
@@ -67,8 +67,8 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
 mod tests {
     use std::fs::{read, write};
 
-    const DEFAULT_QUALITY: usize = 8;
     const DEFAULT_METADATA: &str = "";
+    const DEFAULT_QUALITY: usize = 8;
     const DEFAULT_TRANSFORM: bool = true;
 
     macro_rules! ok(($result:expr) => ($result.unwrap()));
@@ -79,8 +79,8 @@ mod tests {
             "tests/fixtures/Roboto-Regular.otf.woff2",
             ok!(super::compress(
                 &ok!(read("tests/fixtures/Roboto-Regular.otf")),
-                DEFAULT_QUALITY,
                 DEFAULT_METADATA,
+                DEFAULT_QUALITY,
                 DEFAULT_TRANSFORM,
             )),
         ));
@@ -98,8 +98,8 @@ mod tests {
             "tests/fixtures/Roboto-Regular.ttf.woff2",
             ok!(super::compress(
                 &ok!(read("tests/fixtures/Roboto-Regular.ttf")),
-                DEFAULT_QUALITY,
                 DEFAULT_METADATA,
+                DEFAULT_QUALITY,
                 DEFAULT_TRANSFORM,
             )),
         ));
