@@ -8,26 +8,12 @@ macro_rules! ok(($result:expr) => ($result.unwrap()));
 
 #[bench]
 fn compress(bencher: &mut Bencher) {
-    bencher.iter(|| {
-        ok!(woff::version2::convert(
-            "tests/fixtures/Roboto-Regular.ttf",
-            "tests/fixtures/Roboto-Regular.ttf.woff2",
-            None,
-            None,
-            None,
-        ));
-    });
+    let data = ok!(std::fs::read("tests/fixtures/Roboto-Regular.ttf"));
+    bencher.iter(|| ok!(woff::version2::compress(&data, 8, "", true)));
 }
 
 #[bench]
 fn decompress(bencher: &mut Bencher) {
-    bencher.iter(|| {
-        ok!(woff::version2::convert(
-            "tests/fixtures/Roboto-Regular.ttf.woff2",
-            "tests/fixtures/Roboto-Regular.ttf",
-            None,
-            None,
-            None,
-        ));
-    });
+    let data = ok!(std::fs::read("tests/fixtures/Roboto-Regular.ttf.woff2"));
+    bencher.iter(|| ok!(woff::version2::decompress(&data)));
 }
