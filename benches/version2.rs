@@ -9,7 +9,7 @@ macro_rules! ok(($result:expr) => ($result.unwrap()));
 #[bench]
 fn compress(bencher: &mut Bencher) {
     let data = ok!(std::fs::read("tests/fixtures/Roboto-Regular.ttf"));
-    bencher.iter(|| ok!(woff::version2::compress(&data, 8, "", true)));
+    bencher.iter(|| ok!(woff::version2::compress(&data, "", 8, true)));
 }
 
 #[bench]
