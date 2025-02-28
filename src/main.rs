@@ -1,5 +1,7 @@
+use std::fs::{read, write};
 use std::path::PathBuf;
 
+#[allow(unused_variables)]
 fn main() {
     let arguments::Arguments {
         options, orphans, ..
@@ -7,45 +9,65 @@ fn main() {
     #[allow(clippy::get_first)]
     let source = match orphans.get(0) {
         Some(value) => PathBuf::from(value),
-        _ => {
-            eprintln!("Error: a source should be given.");
-            std::process::exit(1);
-        }
+        _ => usage(),
     };
     let destination = match orphans.get(1) {
         Some(value) => PathBuf::from(value),
-        _ => {
-            eprintln!("Error: a destination should be given.");
-            std::process::exit(1);
-        }
+        _ => usage(),
     };
-    let source_extension = source.extension().and_then(|value| value.to_str());
-    let destination_extension = destination.extension().and_then(|value| value.to_str());
-    if source_extension
-        .map(|value| value == "woff")
-        .unwrap_or(false)
-        || destination_extension
-            .map(|value| value == "woff")
-            .unwrap_or(false)
-    {
-        woff::version1::convert(source, destination).expect("failed to transform");
-    } else if source_extension
-        .map(|value| value == "woff2")
-        .unwrap_or(false)
-        || destination_extension
-            .map(|value| value == "woff2")
-            .unwrap_or(false)
-    {
-        woff::version2::convert(
-            source,
-            destination,
-            options.get::<String>("metadata"),
-            options.get::<usize>("quality"),
-            options.get::<bool>("transform"),
-        )
-        .expect("failed to transform");
-    } else {
-        eprintln!("Error: one file should end with either .woff or .woff2.");
-        std::process::exit(1);
+    #[allow(unused_mut)]
+    let mut data = read(&source).expect("failed to read the source");
+    match (
+        source.extension().and_then(|value| value.to_str()),
+        destination.extension().and_then(|value| value.to_str()),
+    ) {
+        #[cfg(feature = "version1")]
+        (_, Some("woff")) => {
+            data = woff::version1::compress(
+                &data,
+                options.get::<usize>("major").unwrap_or(1),
+                options.get::<usize>("minor").unwrap_or(0),
+            )
+            .expect("failed to compress");
+        }
+        #[cfg(feature = "version1")]
+        (Some("woff"), _) => {
+            data = woff::version1::decompress(&data).expect("failed to decompress");
+        }
+        #[cfg(feature = "version2")]
+        (_, Some("woff2")) => {
+            data = woff::version2::compress(
+                &data,
+                options.get::<usize>("quality").unwrap_or(8),
+                options.get::<String>("metadata").unwrap_or_default(),
+                options.get::<bool>("transform").unwrap_or(true),
+            )
+            .expect("failed to compress");
+        }
+        #[cfg(feature = "version2")]
+        (Some("woff2"), _) => {
+            data = woff::version2::decompress(&data).expect("failed to decompress");
+        }
+        _ => usage(),
     }
+    #[allow(unreachable_code)]
+    write(destination, data).expect("failed to write to the destination");
+}
+
+fn usage() -> ! {
+    eprintln!(
+        r#"Usage: <source> <destination> [options]
+
+Either the source or destination should end with either .woff or .woff2.
+
+Options for WOFF:
+    --major <number>
+    --minor <number>
+
+Options for WOFF2:
+    --quality <number>
+    --metadata <string>
+    --no-transform"#
+    );
+    std::process::exit(1);
 }

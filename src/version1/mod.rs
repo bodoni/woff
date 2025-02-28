@@ -4,19 +4,16 @@
 
 mod ffi;
 
-use std::io::{Error, Result};
-use std::path::Path;
-
 /// Compress.
-pub fn compress(data: &[u8]) -> Option<Vec<u8>> {
+pub fn compress(data: &[u8], major_version: usize, minor_version: usize) -> Option<Vec<u8>> {
     let mut size = 0;
     let mut status = 0;
     let data = unsafe {
         ffi::woffEncode(
             data.as_ptr() as _,
             data.len() as _,
-            1,
-            0,
+            major_version as _,
+            minor_version as _,
             &mut size,
             &mut status,
         )
@@ -33,29 +30,6 @@ pub fn decompress(data: &[u8]) -> Option<Vec<u8>> {
         unsafe { ffi::woffDecode(data.as_ptr() as _, data.len() as _, &mut size, &mut status) };
     debug_assert_eq!(status, 0);
     finalize(data, size, status)
-}
-
-/// Compress or decompress.
-pub fn convert<T: AsRef<Path>>(source: T, destination: T) -> Result<()> {
-    let data = std::fs::read(source)?;
-    let destination = destination.as_ref();
-    let data = if destination
-        .extension()
-        .and_then(|value| value.to_str())
-        .map(|value| value == "woff")
-        .unwrap_or(false)
-    {
-        match compress(&data) {
-            Some(data) => data,
-            _ => return Err(Error::other("failed to compress")),
-        }
-    } else {
-        match decompress(&data) {
-            Some(data) => data,
-            _ => return Err(Error::other("failed to decompress")),
-        }
-    };
-    std::fs::write(destination, data)
 }
 
 fn finalize(data: *const u8, size: u32, status: u32) -> Option<Vec<u8>> {
@@ -79,31 +53,46 @@ fn finalize(data: *const u8, size: u32, status: u32) -> Option<Vec<u8>> {
 
 #[cfg(test)]
 mod tests {
+    use std::fs::{read, write};
+
+    const DEFAULT_MAJOR: usize = 1;
+    const DEFAULT_MINOR: usize = 0;
+
+    macro_rules! ok(($result:expr) => ($result.unwrap()));
+
     #[test]
     fn otf() {
-        super::convert(
-            "tests/fixtures/Roboto-Regular.otf",
+        ok!(write(
             "tests/fixtures/Roboto-Regular.otf.woff",
-        )
-        .unwrap();
-        super::convert(
-            "tests/fixtures/Roboto-Regular.otf.woff",
+            ok!(super::compress(
+                &ok!(read("tests/fixtures/Roboto-Regular.otf")),
+                DEFAULT_MAJOR,
+                DEFAULT_MINOR,
+            )),
+        ));
+        ok!(write(
             "tests/fixtures/Roboto-Regular.otf",
-        )
-        .unwrap();
+            ok!(super::decompress(&ok!(read(
+                "tests/fixtures/Roboto-Regular.otf.woff"
+            )))),
+        ));
     }
 
     #[test]
     fn ttf() {
-        super::convert(
-            "tests/fixtures/Roboto-Regular.ttf",
+        ok!(write(
             "tests/fixtures/Roboto-Regular.ttf.woff",
-        )
-        .unwrap();
-        super::convert(
-            "tests/fixtures/Roboto-Regular.ttf.woff",
+            ok!(super::compress(
+                &ok!(read("tests/fixtures/Roboto-Regular.ttf")),
+                DEFAULT_MAJOR,
+                DEFAULT_MINOR,
+            )),
+        ));
+        ok!(write(
             "tests/fixtures/Roboto-Regular.ttf",
-        )
-        .unwrap();
+            ok!(super::decompress(&ok!(read(
+                "tests/fixtures/Roboto-Regular.ttf.woff"
+            )))),
+        ));
     }
 }
