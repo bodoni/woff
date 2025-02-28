@@ -25,8 +25,8 @@ fn main() {
         (_, Some("woff")) => {
             data = woff::version1::compress(
                 &data,
-                options.get::<usize>("major").unwrap_or(1),
-                options.get::<usize>("minor").unwrap_or(0),
+                options.get::<usize>("major-version").unwrap_or(1),
+                options.get::<usize>("minor-version").unwrap_or(0),
             )
             .expect("failed to compress");
         }
@@ -61,13 +61,13 @@ fn usage() -> ! {
 Either the source or destination should end with either .woff or .woff2.
 
 Options for WOFF:
-    --major <number>
-    --minor <number>
+    --major-version <number> — set the major version (1 by default)
+    --minor-version <number> — set the minor version (0 by default)
 
 Options for WOFF2:
-    --quality <number>
-    --metadata <string>
-    --no-transform"#
+    --quality <number>  — set the compression quality (8 by default)
+    --metadata <string> — append metadata (empty by default)
+    --no-transform      — disallow transforms"#
     );
     std::process::exit(1);
 }

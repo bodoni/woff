@@ -2,16 +2,27 @@
 
 The package provides a converter for Web Open Font Format.
 
-## Usage
+## Installation
 
 ```shell
 cargo install --features binary woff
+```
 
-woff Roboto-Regular.ttf Roboto-Regular.woff
-woff Roboto-Regular.woff Roboto-Regular.ttf
+## Usage
 
-woff Roboto-Regular.ttf Roboto-Regular.woff2
-woff Roboto-Regular.woff2 Roboto-Regular.ttf
+```
+Usage: woff <source> <destination> [options]
+
+Either the source or destination should end with either .woff or .woff2.
+
+Options for WOFF:
+    --major-version <number> — set the major version (1 by default)
+    --minor-version <number> — set the minor version (0 by default)
+
+Options for WOFF2:
+    --quality <number>  — set the compression quality (8 by default)
+    --metadata <string> — append metadata (empty by default)
+    --no-transform      — disallow transforms
 ```
 
 ## Contribution
