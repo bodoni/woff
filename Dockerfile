@@ -4,6 +4,8 @@ WORKDIR /source
 COPY . .
 
 RUN cargo install --features binary --path . --root target/install
+RUN target/install/bin/woff tests/fixtures/Roboto-Regular.ttf Roboto-Regular.woff
+RUN target/install/bin/woff tests/fixtures/Roboto-Regular.ttf Roboto-Regular.woff2
 
 FROM scratch
 
