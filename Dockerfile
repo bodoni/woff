@@ -12,7 +12,7 @@ FROM scratch
 
 COPY --from=builder /source/target/install /
 COPY --from=builder /source/tests/fixtures/Roboto-Regular.ttf .
-RUN woff Roboto-Regular.ttf Roboto-Regular.woff
-RUN woff Roboto-Regular.ttf Roboto-Regular.woff2
+RUN ["woff", "Roboto-Regular.ttf", "Roboto-Regular.woff"]
+RUN ["woff", "Roboto-Regular.ttf", "Roboto-Regular.woff2"]
 
 ENTRYPOINT ["/bin/woff"]
