@@ -56,7 +56,7 @@ fn main() {
 
 fn usage() -> ! {
     eprintln!(
-        r#"Usage: <source> <destination> [options]
+        r#"Usage: woff <source> <destination> [options]
 
 Either the source or destination should end with either .woff or .woff2.
 
