@@ -2,7 +2,7 @@
 name = "woff"
 version = "0.6.1"
 edition = "2021"
-license = "Apache-2.0/MIT"
+license = "Apache-2.0 OR MIT"
 authors = ["Ivan Ukhov <ivan.ukhov@gmail.com>"]
 description = "The package provides a converter for Web Open Font Format."
 documentation = "https://docs.rs/woff"
