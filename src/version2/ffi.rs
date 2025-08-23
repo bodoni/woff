@@ -1,4 +1,4 @@
-extern "C" {
+unsafe extern "C" {
     pub fn ComputeTTFToWOFF2Size(
         data: *const u8,
         length: libc::size_t,

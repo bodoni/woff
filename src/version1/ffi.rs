@@ -1,4 +1,4 @@
-extern "C" {
+unsafe extern "C" {
     pub fn woffEncode(
         sfntData: *const u8,
         sfntLen: u32,
