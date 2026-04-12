@@ -3,15 +3,16 @@ fn main() {
     let target = std::env::var("TARGET").unwrap();
 
     #[cfg(feature = "version1")]
-    cc::Build::new()
-        .include("vendor/sfnt2woff/source/woff")
-        .file("vendor/sfnt2woff/source/woff/woff.c")
-        .static_flag(true)
-        .warnings(false)
-        .compile("libsfnt2woff.a");
-
-    #[cfg(feature = "version1")]
-    println!("cargo:rustc-link-lib=z");
+    {
+        let zlib_include = std::env::var("DEP_Z_INCLUDE")                                                                                                                                                                                       
+          .expect("DEP_Z_INCLUDE should be set by libz-sys"); 
+        cc::Build::new()
+            .include("vendor/sfnt2woff/source/woff")
+            .include(&zlib_include)
+            .file("vendor/sfnt2woff/source/woff/woff.c")
+            .warnings(false)
+            .compile("libsfnt2woff.a");
+    }
 
     #[cfg(feature = "version2")]
     cc::Build::new()
@@ -20,7 +21,6 @@ fn main() {
         .file("vendor/woff2/wrapper/woff2.cpp")
         .include("vendor/woff2/source/include")
         .include("vendor/woff2/wrapper")
-        .static_flag(true)
         .warnings(false)
         .compile("libwoff2wrapper.a");
 
@@ -40,7 +40,6 @@ fn main() {
         .file("vendor/woff2/source/src/woff2_dec.cc")
         .file("vendor/woff2/source/src/woff2_enc.cc")
         .file("vendor/woff2/source/src/woff2_out.cc")
-        .static_flag(true)
         .warnings(false)
         .compile("libwoff2.a");
 
@@ -78,7 +77,6 @@ fn main() {
         .file("vendor/brotli/source/c/enc/metablock.c")
         .file("vendor/brotli/source/c/enc/static_dict.c")
         .file("vendor/brotli/source/c/enc/utf8_util.c")
-        .static_flag(true)
         .warnings(false)
         .compile("libbrotli.a");
 
