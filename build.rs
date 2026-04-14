@@ -4,8 +4,8 @@ fn main() {
 
     #[cfg(feature = "version1")]
     {
-        let zlib_include = std::env::var("DEP_Z_INCLUDE")                                                                                                                                                                                       
-          .expect("DEP_Z_INCLUDE should be set by libz-sys"); 
+        let zlib_include =
+            std::env::var("DEP_Z_INCLUDE").expect("DEP_Z_INCLUDE should be set by libz-sys");
         cc::Build::new()
             .include("vendor/sfnt2woff/source/woff")
             .include(&zlib_include)
