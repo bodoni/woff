@@ -55,7 +55,9 @@ fn main() {
         .file("vendor/brotli/source/c/dec/bit_reader.c")
         .file("vendor/brotli/source/c/dec/decode.c")
         .file("vendor/brotli/source/c/dec/huffman.c")
+        .file("vendor/brotli/source/c/dec/prefix.c")
         .file("vendor/brotli/source/c/dec/state.c")
+        .file("vendor/brotli/source/c/dec/static_init.c")
         .file("vendor/brotli/source/c/enc/backward_references.c")
         .file("vendor/brotli/source/c/enc/backward_references_hq.c")
         .file("vendor/brotli/source/c/enc/bit_cost.c")
@@ -76,6 +78,8 @@ fn main() {
         .file("vendor/brotli/source/c/enc/memory.c")
         .file("vendor/brotli/source/c/enc/metablock.c")
         .file("vendor/brotli/source/c/enc/static_dict.c")
+        .file("vendor/brotli/source/c/enc/static_dict_lut.c")
+        .file("vendor/brotli/source/c/enc/static_init.c")
         .file("vendor/brotli/source/c/enc/utf8_util.c")
         .warnings(false)
         .compile("libbrotli.a");
